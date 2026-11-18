@@ -38,8 +38,8 @@
     <h2>どっちの陣営で<br>戦う？</h2>
     <p class="sub">大会ごとに所属を宣言しよう</p>
     <div class="teams">
-      <button class="team k" data-team="kino" type="button">${C("kino","0 0 100 120")}<div><div class="h">きのこ陣営</div><div class="d">かさが広くて安定感ばつぐん。<br>＋助っ人外国人選手</div></div></button>
-      <button class="team t" data-team="take" type="button">${C("take","0 0 100 120")}<div><div class="h">たけのこ陣営</div><div class="d">細身でとがった上級者向け。<br>＋助っ人外国人選手</div></div></button>
+      <button class="team k" data-team="kino" type="button">${C("kino","0 0 100 120")}<div><div class="h">きのこ陣営</div><div class="d">どっしり安定の守りタイプ。<br>＋助っ人外国人選手</div></div></button>
+      <button class="team t" data-team="take" type="button">${C("take","0 0 100 120")}<div><div class="h">たけのこ陣営</div><div class="d">スピード自慢の攻めタイプ。<br>＋助っ人外国人選手</div></div></button>
     </div>
     ${ht("sel","現在の陣営の勝ち点")}
     <p class="howto">3つの種目で、陣営に勝ち点を送ろう</p>
