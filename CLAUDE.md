@@ -78,7 +78,7 @@
 
 ## 7. デザイン
 
-- カラー：`--choco #4a2c1d`（文字・ボタン）、`--kino #c8502a`（きのこ陣営）、`--take #3f8a3a`（たけのこ陣営）、`--gold #d9a23a`（PERFECT・メダル）、`--bg #faf6f0`、`--soft #f3ebe0`、`--line #e6dccf`、`--mute #8a7868`
+- カラー：`--choco #4a2c1d`（文字・ボタン）、`--kino #dd7409`（きのこ陣営＝マンゴー）、`--take #5f8f24`（たけのこ陣営＝ピスタチオ）、`--ng #c8502a`（警告・不正解）、`--ok #3f8a3a`（正解）、`--gold #d9a23a`（PERFECT・メダル）、`--bg #faf6f0`、`--soft #f3ebe0`、`--line #e6dccf`、`--mute #8a7868`
 - フォント：`"Hiragino Sans","Noto Sans JP","Yu Gothic",sans-serif`。太さは900（見出し）／700（ラベル）。
 - レイアウト：最大幅400pxの縦長アプリ。PCでは中央に置き、角丸28px。ボタンは角丸いっぱい（pill）。
 - キャラクター（陣営ボタン用）とピース（積む用）のSVGは `prototype/index.html` の `<symbol id="kino|take|pk|pt">` をそのまま使う。オリジナルの描き下ろしなので、**明治のロゴや実際のパッケージ画像は使わない**。

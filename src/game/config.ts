@@ -2,7 +2,7 @@ import type { Team } from '../state';
 
 export interface PieceSpec {
   /** SVG symbol id */
-  sym: 'pk' | 'pt';
+  sym: 'pkm' | 'ptp';
   /** piece width / height in px */
   w: number;
   h: number;
@@ -16,8 +16,8 @@ export interface PieceSpec {
 
 // CLAUDE.md §4
 export const SPEC: Record<Team, PieceSpec> = {
-  kino: { sym: 'pk', w: 80, h: 60, step: 34, speed: 150, tol: 0.62 },
-  take: { sym: 'pt', w: 60, h: 70, step: 42, speed: 130, tol: 0.55 },
+  kino: { sym: 'pkm', w: 80, h: 60, step: 34, speed: 150, tol: 0.62 },
+  take: { sym: 'ptp', w: 60, h: 70, step: 42, speed: 130, tol: 0.55 },
 };
 
 export const GAME = {

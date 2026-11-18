@@ -32,7 +32,7 @@ export const EVENTS: Record<EventId, EventDef> = {
     name: 'きのたけ積み上げ',
     desc: '30秒で、落とさず高く積もう',
     teamNote: 'きのこは広くて安定、たけのこは細くて難しい',
-    icon: { sym: 'pk', viewBox: '0 0 80 60' },
+    icon: { sym: 'pkm', viewBox: '0 0 80 60' },
   },
   harvest: {
     id: 'harvest',

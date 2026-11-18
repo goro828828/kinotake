@@ -1,4 +1,4 @@
-:root { --ink:#2b1d14; --choco:#4a2c1d; --kino:#c8502a; --take:#3f8a3a; --gold:#d9a23a; --bg:#faf6f0; --soft:#f3ebe0; --line:#e6dccf; --mute:#8a7868; }
+:root { --ink:#2b1d14; --choco:#4a2c1d; --kino:#dd7409; --take:#5f8f24; --ok:#3f8a3a; --ng:#c8502a; --gold:#d9a23a; --bg:#faf6f0; --soft:#f3ebe0; --line:#e6dccf; --mute:#8a7868; }
 * { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
 html,body { height:100%; overscroll-behavior:none; }
 body { font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",sans-serif; color:var(--ink); background:#e9e1d6; display:flex; justify-content:center; align-items:center; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; touch-action:manipulation; -webkit-text-size-adjust:100%; }
@@ -37,7 +37,7 @@ h2 { font-size:22px; font-weight:900; color:var(--choco); text-align:center; lin
 .hud .box { background:#fff; border:1px solid var(--line); border-radius:12px; padding:6px 12px; text-align:center; min-width:84px; }
 .hud .lb { font-size:10px; color:var(--mute); font-weight:700; letter-spacing:.08em; }
 .hud .vl { font-size:20px; font-weight:900; color:var(--choco); line-height:1.15; font-variant-numeric:tabular-nums; }
-.hud .vl.warn { color:var(--kino); }
+.hud .vl.warn { color:var(--ng); }
 .field { flex:1; min-height:0; margin-top:12px; background:linear-gradient(#fff 0%, var(--soft) 100%); border-radius:18px; border:1px solid var(--line); position:relative; overflow:hidden; cursor:pointer; touch-action:none; }
 .world { position:absolute; inset:0; transition:transform .35s ease; }
 .ground { position:absolute; left:50%; bottom:18px; width:120px; height:10px; margin-left:-60px; background:#dccbb5; border-radius:6px; }
@@ -126,20 +126,20 @@ h2 { font-size:22px; font-weight:900; color:var(--choco); text-align:center; lin
 .choice:active:not(:disabled) { transform:scale(.98); }
 .choice:disabled { cursor:default; }
 .choice .ck { width:22px; height:22px; flex:0 0 auto; border-radius:99px; background:var(--soft); font-size:12px; display:flex; align-items:center; justify-content:center; }
-.choice.right { background:var(--take); color:#fff; box-shadow:none; }
-.choice.wrong { background:var(--kino); color:#fff; box-shadow:none; }
+.choice.right { background:var(--ok); color:#fff; box-shadow:none; }
+.choice.wrong { background:var(--ng); color:#fff; box-shadow:none; }
 .choice.right .ck, .choice.wrong .ck { background:rgba(255,255,255,.25); }
 .choice.gone { opacity:.25; text-decoration:line-through; }
 .choice:disabled:not(.right):not(.wrong):not(.gone) { opacity:.5; }
 .qfb { margin-top:10px; font-size:12px; line-height:1.5; color:var(--mute); text-align:center; min-height:40px; }
 .qfb b { display:block; font-size:16px; font-weight:900; }
-.qfb.ok b { color:var(--take); }
-.qfb.ng b { color:var(--kino); }
+.qfb.ok b { color:var(--ok); }
+.qfb.ng b { color:var(--ng); }
 #qHint { margin-top:10px; font-size:13px; padding:11px; }
 
 /* start screen: key visual (mango vs pistachio) */
-:root { --mango:#e07a0a; --mango-l:#f6a91a; --pista:#5f8f24; --pista-l:#86b13a; }
-#s-select { overflow-y:auto; overscroll-behavior:contain; --kino:var(--mango); --take:var(--pista); }
+:root { --mango:var(--kino); --mango-l:#f6a91a; --pista:var(--take); --pista-l:#86b13a; }
+#s-select { overflow-y:auto; overscroll-behavior:contain; }
 .hero { margin:-18px -18px 0; flex:0 0 auto; }
 .hero-svg { display:block; width:100%; height:auto; }
 .hero-title { font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",sans-serif; font-weight:900; letter-spacing:.02em; }
