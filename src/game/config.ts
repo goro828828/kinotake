@@ -44,6 +44,8 @@ export const SCORE = {
 };
 
 // CLAUDE.md §6
+/** false = daily limit and QR bonus are switched off (unlimited plays). Set true to bring back §6. */
+export const PLAY_LIMIT_ENABLED = false;
 export const DAILY_PLAYS = 3;
 export const QR_BONUS_PER_DAY = 1;
 

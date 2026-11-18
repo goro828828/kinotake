@@ -1,4 +1,4 @@
-import { DAILY_PLAYS, DEMO_TEAM_POINTS, QR_BONUS_PER_DAY } from './game/config';
+import { DAILY_PLAYS, DEMO_TEAM_POINTS, PLAY_LIMIT_ENABLED, QR_BONUS_PER_DAY } from './game/config';
 
 export type Team = 'kino' | 'take';
 
@@ -64,11 +64,13 @@ export const state = {
     return DAILY_PLAYS + day().bonus;
   },
   remaining(): number {
+    if (!PLAY_LIMIT_ENABLED) return Infinity;
     const d = day();
     return Math.max(0, DAILY_PLAYS + d.bonus - d.plays);
   },
   /** Consume one play. Returns false if none left. */
   consumePlay(): boolean {
+    if (!PLAY_LIMIT_ENABLED) return true;
     const d = day();
     if (DAILY_PLAYS + d.bonus - d.plays <= 0) return false;
     d.plays++;

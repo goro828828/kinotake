@@ -1,4 +1,5 @@
 import { state } from '../state';
+import { PLAY_LIMIT_ENABLED } from '../game/config';
 import { sfx } from '../sound';
 
 export const $ = <T extends HTMLElement = HTMLElement>(id: string): T => {
@@ -48,6 +49,7 @@ export function teamBarHtml(prefix: string, title: string): string {
 }
 
 export function playsText(): string {
+  if (!PLAY_LIMIT_ENABLED) return '';
   return `今日のプレイ　残り ${state.remaining()} / ${state.limit()} 回`;
 }
 

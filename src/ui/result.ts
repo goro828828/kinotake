@@ -1,5 +1,5 @@
 import { state, type Team } from '../state';
-import { SCORE } from '../game/config';
+import { PLAY_LIMIT_ENABLED, SCORE } from '../game/config';
 import { EVENTS, resultTotal, type EventId, type PlayResult } from '../games';
 import { $, fmt, showScreen, teamBar, teamBarHtml, toast } from './common';
 
@@ -46,9 +46,16 @@ export function initResult(playAgain: (team: Team, ev: EventId) => void, otherEv
 function refreshButtons(): void {
   const r = state.remaining();
   const again = $<HTMLButtonElement>('again');
+  const qr = $<HTMLButtonElement>('qr');
+  // limit switched off: unlimited replays, no QR bonus button
+  qr.hidden = !PLAY_LIMIT_ENABLED;
+  if (!PLAY_LIMIT_ENABLED) {
+    again.disabled = false;
+    again.textContent = 'もう一度プレイ';
+    return;
+  }
   again.disabled = r <= 0;
   again.textContent = r > 0 ? `もう一度プレイ（残り ${r} 回）` : '今日のプレイは終わり（また明日！）';
-  const qr = $<HTMLButtonElement>('qr');
   const used = state.qrUsed();
   qr.disabled = used;
   qr.textContent = used ? 'QRの追加プレイは使用済み' : 'パッケージのQRで追加プレイ（＋1回）';
