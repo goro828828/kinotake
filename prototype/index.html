@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>きのたけカップ｜きのたけ積み上げ（試作）</title>
+<style>
+:root { --ink:#2b1d14; --choco:#4a2c1d; --kino:#c8502a; --take:#3f8a3a; --gold:#d9a23a; --bg:#faf6f0; --soft:#f3ebe0; --line:#e6dccf; --mute:#8a7868; }
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+html,body { height:100%; }
+body { font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",sans-serif; color:var(--ink); background:#e9e1d6; display:flex; justify-content:center; align-items:center; user-select:none; }
+.app { width:100%; max-width:400px; height:100%; max-height:820px; background:var(--bg); position:relative; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 0 0 1px var(--line); }
+@media (min-height:840px) { .app { border-radius:28px; height:780px; } }
+.bar { background:var(--choco); color:#fff; text-align:center; font-size:13px; font-weight:700; letter-spacing:.06em; padding:12px 0; flex:0 0 auto; }
+.screen { position:absolute; inset:44px 0 0 0; display:none; flex-direction:column; padding:18px 18px 20px; }
+.screen.on { display:flex; }
+h2 { font-size:22px; font-weight:900; color:var(--choco); text-align:center; line-height:1.35; }
+.sub { font-size:12px; color:var(--mute); text-align:center; margin-top:4px; }
+.btn { border:none; font:inherit; cursor:pointer; border-radius:999px; font-weight:900; font-size:15px; padding:13px; width:100%; }
+.btn.dark { background:var(--choco); color:#fff; }
+.btn.line { background:#fff; color:var(--choco); box-shadow:inset 0 0 0 2px var(--choco); }
+.btn:disabled { opacity:.35; cursor:default; }
+.btn:active:not(:disabled) { transform:scale(.98); }
+
+/* select */
+.teams { display:flex; flex-direction:column; gap:12px; margin-top:18px; }
+.team { border:none; font:inherit; cursor:pointer; border-radius:18px; color:#fff; display:flex; align-items:center; gap:12px; padding:12px 16px; text-align:left; transition:transform .1s; }
+.team:active { transform:scale(.98); }
+.team.k { background:var(--kino); } .team.t { background:var(--take); }
+.team svg { width:62px; height:74px; flex:0 0 auto; }
+.team .h { font-size:19px; font-weight:900; }
+.team .d { font-size:12px; opacity:.92; line-height:1.5; margin-top:2px; }
+.score-card { margin-top:auto; background:#fff; border:1px solid var(--line); border-radius:16px; padding:14px 16px; }
+.score-card .ttl { font-size:11px; color:var(--mute); font-weight:700; text-align:center; letter-spacing:.08em; }
+.tb-lbl { display:flex; justify-content:space-between; font-size:13px; font-weight:900; margin-top:6px; }
+.tb { height:12px; border-radius:99px; overflow:hidden; display:flex; margin-top:6px; background:var(--soft); }
+.tb i { display:block; height:100%; transition:width .8s ease; }
+.howto { font-size:12px; color:var(--mute); text-align:center; margin-top:12px; line-height:1.6; }
+
+/* game */
+.hud { display:flex; justify-content:space-between; align-items:center; }
+.hud .box { background:#fff; border:1px solid var(--line); border-radius:12px; padding:6px 12px; text-align:center; min-width:84px; }
+.hud .lb { font-size:10px; color:var(--mute); font-weight:700; letter-spacing:.08em; }
+.hud .vl { font-size:20px; font-weight:900; color:var(--choco); line-height:1.15; font-variant-numeric:tabular-nums; }
+.hud .vl.warn { color:var(--kino); }
+.field { flex:1; margin-top:12px; background:linear-gradient(#fff 0%, var(--soft) 100%); border-radius:18px; border:1px solid var(--line); position:relative; overflow:hidden; cursor:pointer; touch-action:manipulation; }
+.world { position:absolute; left:0; right:0; bottom:0; top:0; transition:transform .35s ease; }
+.ground { position:absolute; left:50%; bottom:18px; width:120px; height:10px; margin-left:-60px; background:#dccbb5; border-radius:6px; }
+.pc { position:absolute; will-change:transform; }
+.pc svg { width:100%; height:100%; display:block; }
+.mover { position:absolute; top:0; will-change:transform; }
+.guide { position:absolute; top:0; bottom:0; width:0; border-left:2px dashed rgba(74,44,29,.12); pointer-events:none; }
+.pop { position:absolute; left:50%; transform:translateX(-50%); font-weight:900; font-size:22px; color:var(--gold); text-shadow:0 2px 0 #fff; pointer-events:none; animation:pop .8s ease forwards; white-space:nowrap; }
+@keyframes pop { 0%{opacity:0; transform:translate(-50%,8px) scale(.8);} 20%{opacity:1; transform:translate(-50%,0) scale(1.1);} 100%{opacity:0; transform:translate(-50%,-30px) scale(1);} }
+.tip { position:absolute; left:0; right:0; bottom:46%; text-align:center; font-size:14px; font-weight:900; color:var(--choco); opacity:.55; pointer-events:none; }
+.count { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:64px; font-weight:900; color:var(--choco); background:rgba(250,246,240,.75); }
+.taphint { margin-top:12px; }
+.lives { font-size:11px; color:var(--mute); text-align:center; margin-top:8px; }
+
+/* result */
+.res-top { text-align:center; }
+.res-team { display:inline-block; font-size:12px; font-weight:900; color:#fff; border-radius:99px; padding:4px 12px; }
+.big { font-size:44px; font-weight:900; color:var(--choco); line-height:1.1; margin-top:8px; font-variant-numeric:tabular-nums; }
+.big small { font-size:18px; }
+.breakdown { background:#fff; border:1px solid var(--line); border-radius:16px; padding:10px 16px; margin-top:14px; }
+.breakdown div { display:flex; justify-content:space-between; font-size:13px; padding:5px 0; border-bottom:1px dashed var(--line); }
+.breakdown div:last-child { border-bottom:none; font-weight:900; color:var(--choco); }
+.medals { width:100%; border-collapse:collapse; font-size:13px; margin-top:6px; }
+.medals th { font-size:11px; color:var(--mute); font-weight:700; padding:4px 0; }
+.medals td { text-align:center; padding:6px 0; border-top:1px solid var(--line); font-weight:700; font-variant-numeric:tabular-nums; }
+.medals td:first-child { text-align:left; font-weight:900; }
+.actions { margin-top:auto; display:flex; flex-direction:column; gap:10px; }
+.note { font-size:10px; color:var(--mute); text-align:center; margin-top:8px; }
+.toast { position:absolute; left:50%; bottom:90px; transform:translateX(-50%); background:var(--choco); color:#fff; font-size:13px; font-weight:700; padding:10px 16px; border-radius:99px; opacity:0; transition:opacity .25s; pointer-events:none; white-space:nowrap; }
+.toast.on { opacity:1; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="kino" viewBox="0 0 100 120">
+      <rect x="33" y="50" width="34" height="62" rx="12" fill="#ebcd94" stroke="#c99b5e" stroke-width="2"/>
+      <path d="M8 60 C8 14 92 14 92 60 Q50 72 8 60 Z" fill="#6b3f26"/>
+      <path d="M22 34 Q34 22 50 21" fill="none" stroke="#9a6a48" stroke-width="5" stroke-linecap="round"/>
+      <path d="M11 50 Q50 62 89 50 L90 58 Q50 70 10 58 Z" fill="#c8502a"/>
+      <circle cx="43" cy="82" r="3.2" fill="#4a2c1d"/><circle cx="57" cy="82" r="3.2" fill="#4a2c1d"/>
+      <path d="M44 91 Q50 96 56 91" fill="none" stroke="#4a2c1d" stroke-width="2.4" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="take" viewBox="0 0 100 120">
+      <path d="M50 6 C66 30 80 62 78 92 Q50 106 22 92 C20 62 34 30 50 6 Z" fill="#8a5634"/>
+      <path d="M50 6 C60 22 68 40 72 58 Q50 66 28 58 C32 40 40 22 50 6 Z" fill="#5e3620"/>
+      <path d="M22 88 Q50 102 78 88 L78 98 Q50 114 22 98 Z" fill="#ebcd94" stroke="#c99b5e" stroke-width="2"/>
+      <path d="M27 66 Q50 76 73 66 L74 73 Q50 84 26 73 Z" fill="#3f8a3a"/>
+      <circle cx="42" cy="49" r="3.6" fill="#fff"/><circle cx="58" cy="49" r="3.6" fill="#fff"/>
+      <circle cx="42.6" cy="49.6" r="1.9" fill="#2b1d14"/><circle cx="58.6" cy="49.6" r="1.9" fill="#2b1d14"/>
+    </symbol>
+    <!-- stackable pieces (no face) -->
+    <symbol id="pk" viewBox="0 0 80 60"><rect x="28" y="24" width="24" height="34" rx="8" fill="#ebcd94" stroke="#c99b5e" stroke-width="2"/><path d="M3 30 C3 2 77 2 77 30 Q40 38 3 30 Z" fill="#6b3f26"/><path d="M16 15 Q26 8 38 7" fill="none" stroke="#9a6a48" stroke-width="4" stroke-linecap="round"/></symbol>
+    <symbol id="pt" viewBox="0 0 60 70"><path d="M30 2 C42 18 50 38 49 56 Q30 64 11 56 C10 38 18 18 30 2 Z" fill="#8a5634"/><path d="M30 2 C37 12 42 24 44 34 Q30 39 16 34 C18 24 23 12 30 2 Z" fill="#5e3620"/><path d="M11 53 Q30 62 49 53 L49 60 Q30 70 11 60 Z" fill="#ebcd94" stroke="#c99b5e" stroke-width="2"/></symbol>
+  </defs>
+</svg>
+
+<div class="app" id="app">
+  <div class="bar" id="bar">きのたけカップ 地区大会</div>
+
+  <!-- 1. select -->
+  <section class="screen on" id="s-select">
+    <h2>どっちの陣営で<br>戦う？</h2>
+    <p class="sub">大会ごとに所属を宣言しよう</p>
+    <div class="teams">
+      <button class="team k" data-team="kino"><svg viewBox="0 0 100 120"><use href="#kino"/></svg><div><div class="h">きのこ陣営</div><div class="d">かさが広くて安定感ばつぐん。<br>＋助っ人外国人選手</div></div></button>
+      <button class="team t" data-team="take"><svg viewBox="0 0 100 120"><use href="#take"/></svg><div><div class="h">たけのこ陣営</div><div class="d">細身でとがった上級者向け。<br>＋助っ人外国人選手</div></div></button>
+    </div>
+    <div class="score-card">
+      <div class="ttl">現在の陣営の勝ち点</div>
+      <div class="tb-lbl"><span style="color:var(--kino)" id="selK"></span><span style="color:var(--take)" id="selT"></span></div>
+      <div class="tb"><i id="selBK" style="background:var(--kino)"></i><i id="selBT" style="background:var(--take)"></i></div>
+    </div>
+    <p class="howto">種目：きのたけ積み上げ｜30秒で、落とさず高く積もう</p>
+  </section>
+
+  <!-- 2. game -->
+  <section class="screen" id="s-game">
+    <div class="hud">
+      <div class="box"><div class="lb">SCORE</div><div class="vl" id="hScore">0</div></div>
+      <div class="box"><div class="lb">段数</div><div class="vl" id="hFloor">0</div></div>
+      <div class="box"><div class="lb">のこり</div><div class="vl" id="hTime">30</div></div>
+    </div>
+    <div class="field" id="field">
+      <div class="world" id="world"><div class="ground" id="ground"></div></div>
+      <div class="guide" id="guide"></div>
+      <div class="mover" id="mover"></div>
+      <div class="tip" id="tip">タップで落とす</div>
+      <div class="count" id="count" style="display:none">3</div>
+    </div>
+    <button class="btn dark taphint" id="dropBtn">タップして積む</button>
+    <p class="lives" id="hPlays"></p>
+  </section>
+
+  <!-- 3. result -->
+  <section class="screen" id="s-result">
+    <div class="res-top">
+      <span class="res-team" id="rTeam">きのこ陣営</span>
+      <div style="font-size:15px;font-weight:900;margin-top:10px;color:var(--choco)" id="rReason">タイムアップ！</div>
+      <div class="big">＋<span id="rPts">0</span><small> pt</small></div>
+      <div class="sub" style="margin-top:2px">陣営に勝ち点を加算しました</div>
+    </div>
+    <div class="breakdown">
+      <div><span>参加点</span><span>＋50</span></div>
+      <div><span>積んだ段数 <b id="rFloor">0</b>段 × 10</span><span id="rFloorPt">＋0</span></div>
+      <div><span>PERFECT <b id="rPerf">0</b>回 × 20</span><span id="rPerfPt">＋0</span></div>
+      <div><span>合計</span><span id="rTotal">＋0</span></div>
+    </div>
+    <div class="score-card" style="margin-top:12px">
+      <div class="ttl">陣営の勝ち点（あなたの分を加算後）</div>
+      <div class="tb-lbl"><span style="color:var(--kino)" id="rK"></span><span style="color:var(--take)" id="rT"></span></div>
+      <div class="tb"><i id="rBK" style="background:var(--kino)"></i><i id="rBT" style="background:var(--take)"></i></div>
+    </div>
+    <div class="actions">
+      <button class="btn dark" id="again">もう一度プレイ</button>
+      <button class="btn line" id="qr">パッケージのQRで追加プレイ</button>
+      <button class="btn line" id="share">結果をシェア</button>
+    </div>
+    <p class="note">試作版：勝ち点・陣営の数値はデモ用の仮の値です</p>
+  </section>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const fmt = n => n.toLocaleString('ja-JP');
+  const DAILY = 3;
+  const state = { team: null, teamPts: { kino: 51240, take: 49880 }, plays: 0, bonus: 0, qrUsed: false };
+
+  // piece specs: kinoko = wide & stable, takenoko = narrow & tricky
+  const SPEC = {
+    kino: { sym: 'pk', w: 80, h: 60, step: 34, speed: 150, tol: 0.62 },
+    take: { sym: 'pt', w: 60, h: 70, step: 42, speed: 130, tol: 0.55 }
+  };
+
+  function show(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.toggle('on', s.id === id));
+  }
+  function teamBar(kEl, tEl, bk, bt) {
+    const k = state.teamPts.kino, t = state.teamPts.take, sum = k + t;
+    $(kEl).textContent = 'きのこ ' + fmt(k) + ' pt';
+    $(tEl).textContent = 'たけのこ ' + fmt(t) + ' pt';
+    $(bk).style.width = (k / sum * 100) + '%';
+    $(bt).style.width = (t / sum * 100) + '%';
+  }
+  function toast(msg) {
+    const t = $('toast'); t.textContent = msg; t.classList.add('on');
+    clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('on'), 1800);
+  }
+  function remaining() { return DAILY + state.bonus - state.plays; }
+
+  teamBar('selK', 'selT', 'selBK', 'selBT');
+
+  document.querySelectorAll('.team').forEach(b => b.addEventListener('click', () => {
+    state.team = b.dataset.team;
+    $('bar').textContent = '種目：きのたけ積み上げ';
+    startGame();
+  }));
+
+  // ---------------- game ----------------
+  let g = null;
+  function pieceEl(spec) {
+    const d = document.createElement('div');
+    d.className = 'pc';
+    d.style.width = spec.w + 'px'; d.style.height = spec.h + 'px';
+    d.innerHTML = `<svg viewBox="0 0 ${spec.sym === 'pk' ? '80 60' : '60 70'}"><use href="#${spec.sym}"/></svg>`;
+    return d;
+  }
+
+  function startGame() {
+    if (remaining() <= 0) { toast('今日のプレイ回数は終わりです'); return; }
+    state.plays++;
+    show('s-game');
+    const spec = SPEC[state.team];
+    const field = $('field'), world = $('world');
+    world.querySelectorAll('.pc,.pop').forEach(e => e.remove());
+    world.style.transform = 'translateY(0)';
+    const W = field.clientWidth, H = field.clientHeight;
+    const groundTop = H - 18 - 10;               // y (from top) of ground surface
+    g = { spec, W, H, groundTop, stack: [], score: 0, perfect: 0, time: 30, running: false, dropping: false,
+          mx: spec.w / 2 + 6, dir: 1, speed: spec.speed, cam: 0, last: 0 };
+    const ground = $('ground');
+    ground.style.width = (spec.w + 30) + 'px'; ground.style.marginLeft = -(spec.w + 30) / 2 + 'px';
+    const mover = $('mover'); mover.innerHTML = ''; const m = pieceEl(spec); m.style.position = 'static'; mover.appendChild(m);
+    mover.style.width = spec.w + 'px'; mover.style.height = spec.h + 'px';
+    $('guide').style.display = 'none';
+    $('tip').style.display = 'block';
+    $('hScore').textContent = '0'; $('hFloor').textContent = '0'; $('hTime').textContent = '30'; $('hTime').classList.remove('warn');
+    $('hPlays').textContent = '今日のプレイ　残り ' + remaining() + ' / ' + (DAILY + state.bonus) + ' 回';
+    // countdown
+    const c = $('count'); c.style.display = 'flex'; let n = 3; c.textContent = n;
+    const iv = setInterval(() => {
+      n--; if (n > 0) { c.textContent = n; return; }
+      clearInterval(iv); c.textContent = 'START!';
+      setTimeout(() => { c.style.display = 'none'; g.running = true; g.last = performance.now(); requestAnimationFrame(loop); }, 450);
+    }, 650);
+  }
+
+  function topY() {             // y (in world coords, from top) where the next piece's bottom lands
+    const s = g.stack;
+    return s.length ? s[s.length - 1].y - g.spec.step : g.groundTop;
+  }
+  function topX() { const s = g.stack; return s.length ? s[s.length - 1].x : g.W / 2; }
+
+  function loop(now) {
+    if (!g || !g.running) return;
+    const dt = Math.min(0.05, (now - g.last) / 1000); g.last = now;
+    g.time -= dt;
+    const t = Math.max(0, Math.ceil(g.time));
+    $('hTime').textContent = t; $('hTime').classList.toggle('warn', g.time <= 10);
+    if (g.time <= 0) { finish('タイムアップ！'); return; }
+    if (!g.dropping) {
+      const half = g.spec.w / 2;
+      g.mx += g.dir * g.speed * dt;
+      if (g.mx > g.W - half - 6) { g.mx = g.W - half - 6; g.dir = -1; }
+      if (g.mx < half + 6) { g.mx = half + 6; g.dir = 1; }
+      $('mover').style.transform = `translate(${g.mx - half}px, 14px)`;
+    }
+    requestAnimationFrame(loop);
+  }
+
+  function drop() {
+    if (!g || !g.running || g.dropping) return;
+    $('tip').style.display = 'none';
+    g.dropping = true;
+    const spec = g.spec, half = spec.w / 2;
+    const x = g.mx;
+    const landY = topY();                       // world coords
+    const dx = x - topX();
+    const fieldLand = landY + g.cam;            // screen coords inside field
+    const startTop = 14;
+    const mover = $('mover');
+    const fallDist = (fieldLand - spec.h) - startTop;
+    const dur = Math.max(140, Math.min(380, fallDist * 0.9));
+    mover.style.transition = `transform ${dur}ms cubic-bezier(.5,0,1,1)`;
+    mover.style.transform = `translate(${x - half}px, ${fieldLand - spec.h}px)`;
+    setTimeout(() => {
+      mover.style.transition = 'none';
+      const limit = spec.w * spec.tol;
+      if (g.stack.length && Math.abs(dx) > limit) {          // fell off
+        const p = pieceEl(spec);
+        p.style.left = (x - half) + 'px'; p.style.top = (landY - spec.h) + 'px';
+        p.style.transition = 'transform .7s cubic-bezier(.4,0,1,1), opacity .7s';
+        $('world').appendChild(p);
+        mover.style.transform = 'translate(-999px,0)';
+        requestAnimationFrame(() => { p.style.transform = `translate(${dx > 0 ? 60 : -60}px, 260px) rotate(${dx > 0 ? 80 : -80}deg)`; p.style.opacity = '0'; });
+        g.running = false;
+        setTimeout(() => finish('落としてしまった！'), 900);
+        return;
+      }
+      let px = x, perfect = false;
+      if (g.stack.length && Math.abs(dx) <= 6) { px = topX(); perfect = true; }
+      if (!g.stack.length) { px = x; perfect = Math.abs(x - g.W / 2) <= 6; }
+      const p = pieceEl(spec);
+      p.style.left = (px - half) + 'px'; p.style.top = (landY - spec.h) + 'px';
+      $('world').appendChild(p);
+      g.stack.push({ x: px, y: landY });
+      g.score += 10 + (perfect ? 20 : 0);
+      if (perfect) g.perfect++;
+      popText(perfect ? 'PERFECT! +30' : '+10', landY - spec.h - 6);
+      $('hScore').textContent = fmt(g.score); $('hFloor').textContent = g.stack.length;
+      // speed up a little
+      g.speed = Math.min(spec.speed * 2.2, g.speed * 1.06);
+      // camera: keep top of tower around 55% of field height
+      const want = g.H * 0.55;
+      const screenTop = topY() + g.cam;
+      if (screenTop < want) { g.cam += (want - screenTop); $('world').style.transform = `translateY(${g.cam}px)`; }
+      g.mx = g.dir > 0 ? half + 6 : g.W - half - 6;
+      g.dropping = false;
+    }, dur);
+  }
+
+  function popText(txt, y) {
+    const d = document.createElement('div');
+    d.className = 'pop'; d.textContent = txt; d.style.top = (y - 20) + 'px';
+    if (!txt.startsWith('PERFECT')) { d.style.color = 'var(--choco)'; d.style.fontSize = '16px'; }
+    $('world').appendChild(d); setTimeout(() => d.remove(), 900);
+  }
+
+  $('field').addEventListener('pointerdown', e => { e.preventDefault(); drop(); });
+  $('dropBtn').addEventListener('click', drop);
+  document.addEventListener('keydown', e => { if (e.code === 'Space' && $('s-game').classList.contains('on')) { e.preventDefault(); drop(); } });
+
+  // ---------------- result ----------------
+  function finish(reason) {
+    g.running = false;
+    const floors = g.stack.length, perf = g.perfect;
+    const total = 50 + floors * 10 + perf * 20;
+    state.teamPts[state.team] += total;
+    $('bar').textContent = '結果';
+    const isK = state.team === 'kino';
+    $('rTeam').textContent = isK ? 'きのこ陣営' : 'たけのこ陣営';
+    $('rTeam').style.background = isK ? 'var(--kino)' : 'var(--take)';
+    $('rReason').textContent = reason;
+    $('rFloor').textContent = floors; $('rFloorPt').textContent = '＋' + floors * 10;
+    $('rPerf').textContent = perf; $('rPerfPt').textContent = '＋' + perf * 20;
+    $('rTotal').textContent = '＋' + fmt(total);
+    show('s-result');
+    // count up
+    let v = 0; const step = Math.max(1, Math.round(total / 30));
+    const iv = setInterval(() => { v = Math.min(total, v + step); $('rPts').textContent = fmt(v); if (v >= total) clearInterval(iv); }, 25);
+    teamBar('rK', 'rT', 'rBK', 'rBT');
+    refreshButtons();
+  }
+  function refreshButtons() {
+    const r = remaining();
+    $('again').disabled = r <= 0;
+    $('again').textContent = r > 0 ? `もう一度プレイ（残り ${r} 回）` : '今日のプレイは終わり（また明日！）';
+    $('qr').disabled = state.qrUsed;
+    $('qr').textContent = state.qrUsed ? 'QRの追加プレイは使用済み' : 'パッケージのQRで追加プレイ（＋1回）';
+  }
+  $('again').addEventListener('click', () => { $('bar').textContent = '種目：きのたけ積み上げ'; startGame(); });
+  $('qr').addEventListener('click', () => { if (state.qrUsed) return; state.qrUsed = true; state.bonus++; refreshButtons(); toast('追加プレイが1回ふえました！'); });
+  $('share').addEventListener('click', async () => {
+    const isK = state.team === 'kino';
+    const text = `きのたけカップで${isK ? 'きのこ' : 'たけのこ'}陣営に ${$('rTotal').textContent.replace('＋', '+')} pt 貢献！ #きのたけカップ`;
+    try { await navigator.clipboard.writeText(text); toast('シェア文をコピーしました'); }
+    catch (e) { toast(text); }
+  });
+})();
+</script>
+</body>
+</html>
