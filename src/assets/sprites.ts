@@ -20,6 +20,25 @@ const SYMBOLS = `
     </symbol>
     <symbol id="pk" viewBox="0 0 80 60"><rect x="28" y="24" width="24" height="34" rx="8" fill="#ebcd94" stroke="#c99b5e" stroke-width="2"/><path d="M3 30 C3 2 77 2 77 30 Q40 38 3 30 Z" fill="#6b3f26"/><path d="M16 15 Q26 8 38 7" fill="none" stroke="#9a6a48" stroke-width="4" stroke-linecap="round"/></symbol>
     <symbol id="pt" viewBox="0 0 60 70"><path d="M30 2 C42 18 50 38 49 56 Q30 64 11 56 C10 38 18 18 30 2 Z" fill="#8a5634"/><path d="M30 2 C37 12 42 24 44 34 Q30 39 16 34 C18 24 23 12 30 2 Z" fill="#5e3620"/><path d="M11 53 Q30 62 49 53 L49 60 Q30 70 11 60 Z" fill="#ebcd94" stroke="#c99b5e" stroke-width="2"/></symbol>
+    <!-- featured flavors: mango kinoko / pistachio takenoko (original drawings, sticker style) -->
+    <linearGradient id="gMango" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe066"/><stop offset="1" stop-color="#f5a100"/></linearGradient>
+    <linearGradient id="gPista" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfe57a"/><stop offset="1" stop-color="#76a52a"/></linearGradient>
+    <symbol id="km" viewBox="0 0 100 120">
+      <g fill="#fff" stroke="#fff" stroke-width="10" stroke-linejoin="round"><rect x="33" y="52" width="34" height="60" rx="14"/><path d="M6 62 C6 12 94 12 94 62 Q50 76 6 62 Z"/></g>
+      <rect x="33" y="52" width="34" height="60" rx="14" fill="#f6e2a8" stroke="#b9873f" stroke-width="2.5"/>
+      <path d="M6 62 C6 12 94 12 94 62 Q50 76 6 62 Z" fill="url(#gMango)" stroke="#c47a00" stroke-width="2.5"/>
+      <path d="M10 57 Q50 69 90 57 L90 62 Q50 75 10 62 Z" fill="#e08a00" opacity=".45"/>
+      <path d="M22 36 Q32 23 50 20" fill="none" stroke="#fff8cc" stroke-width="6" stroke-linecap="round" opacity=".9"/>
+    </symbol>
+    <symbol id="tp" viewBox="0 0 100 120">
+      <g fill="#fff" stroke="#fff" stroke-width="10" stroke-linejoin="round"><path d="M50 4 C68 30 82 66 80 94 Q50 108 20 94 C18 66 32 30 50 4 Z"/><path d="M20 88 Q50 102 80 88 L80 100 Q50 116 20 100 Z"/></g>
+      <path d="M50 4 C68 30 82 66 80 94 Q50 108 20 94 C18 66 32 30 50 4 Z" fill="url(#gPista)" stroke="#5f8a22" stroke-width="2.5"/>
+      <path d="M33 46 Q50 53 67 46 M27 68 Q50 77 73 68" fill="none" stroke="#5f8a22" stroke-width="2.5" stroke-linecap="round" opacity=".7"/>
+      <g fill="#e6d34c"><path d="M44 30 l5 -3 3 5 -5 3 Z"/><path d="M58 58 l6 -2 2 5 -6 2 Z"/><path d="M36 58 l5 1 -1 5 -5 -1 Z"/><path d="M52 80 l6 0 0 5 -6 0 Z"/><path d="M64 36 l4 2 -2 4 -4 -2 Z"/></g>
+      <path d="M20 88 Q50 102 80 88 L80 100 Q50 116 20 100 Z" fill="#f0d48a" stroke="#b9873f" stroke-width="2.5"/>
+      <g fill="#d4a95a"><circle cx="34" cy="100" r="1.6"/><circle cx="48" cy="104" r="1.6"/><circle cx="62" cy="101" r="1.6"/><circle cx="72" cy="96" r="1.6"/></g>
+      <path d="M40 22 Q46 14 50 10" fill="none" stroke="#f2f8d0" stroke-width="5" stroke-linecap="round" opacity=".85"/>
+    </symbol>
     <!-- harvest relay (original simple drawings) -->
     <symbol id="cacao" viewBox="0 0 40 40"><path d="M20 3 C31 6 34 20 31 30 C28 37 12 37 9 30 C6 20 9 6 20 3 Z" fill="#c8742a"/><path d="M20 5 V35 M14 7 C11 16 11 26 13 33 M26 7 C29 16 29 26 27 33" stroke="#9a4f1a" stroke-width="2" fill="none" stroke-linecap="round"/></symbol>
     <symbol id="wheat" viewBox="0 0 40 40"><path d="M20 38 V8" stroke="#b8862f" stroke-width="2.5" stroke-linecap="round"/><g fill="#e3b553" stroke="#b8862f" stroke-width="1"><ellipse cx="20" cy="7" rx="3.5" ry="5.5"/><ellipse cx="15.5" cy="13" rx="3.5" ry="5.5" transform="rotate(-30 15.5 13)"/><ellipse cx="24.5" cy="13" rx="3.5" ry="5.5" transform="rotate(30 24.5 13)"/><ellipse cx="15.5" cy="20" rx="3.5" ry="5.5" transform="rotate(-30 15.5 20)"/><ellipse cx="24.5" cy="20" rx="3.5" ry="5.5" transform="rotate(30 24.5 20)"/><ellipse cx="15.5" cy="27" rx="3.5" ry="5.5" transform="rotate(-30 15.5 27)"/><ellipse cx="24.5" cy="27" rx="3.5" ry="5.5" transform="rotate(30 24.5 27)"/></g></symbol>

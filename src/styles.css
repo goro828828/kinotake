@@ -136,3 +136,21 @@ h2 { font-size:22px; font-weight:900; color:var(--choco); text-align:center; lin
 .qfb.ok b { color:var(--take); }
 .qfb.ng b { color:var(--kino); }
 #qHint { margin-top:10px; font-size:13px; padding:11px; }
+
+/* start screen: key visual (mango vs pistachio) */
+:root { --mango:#e07a0a; --mango-l:#f6a91a; --pista:#5f8f24; --pista-l:#86b13a; }
+#s-select { overflow-y:auto; overscroll-behavior:contain; --kino:var(--mango); --take:var(--pista); }
+.hero { margin:-18px -18px 0; flex:0 0 auto; }
+.hero-svg { display:block; width:100%; height:auto; }
+.hero-title { font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",sans-serif; font-weight:900; letter-spacing:.02em; }
+.sel-h { font-size:20px; margin-top:12px; }
+#s-select .teams { margin-top:10px; gap:10px; }
+#s-select .team { padding:10px 14px; gap:10px; }
+#s-select .team svg { width:54px; height:66px; }
+.team.k { background:linear-gradient(135deg, var(--mango-l), var(--mango)); }
+.team.t { background:linear-gradient(135deg, var(--pista-l), var(--pista)); }
+.team .h { font-size:18px; }
+.team .o { display:inline-block; font-size:11px; font-weight:900; background:rgba(255,255,255,.24); border-radius:99px; padding:2px 9px; margin-top:3px; }
+.team .d { font-size:11px; margin-top:4px; }
+#s-select .score-card { margin-top:12px; }
+#s-select .howto { margin-top:8px; }

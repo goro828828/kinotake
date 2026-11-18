@@ -1,16 +1,17 @@
 import { state, type Team } from '../state';
 import { useSvg } from '../assets/sprites';
 import { $, playsText, showScreen, teamBar, teamBarHtml } from './common';
+import { heroSvg } from './hero';
 import { sfx } from '../sound';
 
 export function selectHtml(): string {
   return `
   <section class="screen" id="s-select">
-    <h2>どっちの陣営で<br>戦う？</h2>
-    <p class="sub">大会ごとに所属を宣言しよう</p>
+    <div class="hero">${heroSvg()}</div>
+    <h2 class="sel-h">どっちの陣営で戦う？</h2>
     <div class="teams">
-      <button class="team k" data-team="kino" type="button">${useSvg('kino', '0 0 100 120')}<div><div class="h">きのこ陣営</div><div class="d">どっしり安定の守りタイプ。<br>＋助っ人外国人選手</div></div></button>
-      <button class="team t" data-team="take" type="button">${useSvg('take', '0 0 100 120')}<div><div class="h">たけのこ陣営</div><div class="d">スピード自慢の攻めタイプ。<br>＋助っ人外国人選手</div></div></button>
+      <button class="team k" data-team="kino" type="button">${useSvg('km', '0 0 100 120')}<div><div class="h">きのこ陣営</div><div class="o">マンゴーの山｜インドのマンゴー</div><div class="d">どっしり安定の守りタイプ。＋助っ人外国人選手</div></div></button>
+      <button class="team t" data-team="take" type="button">${useSvg('tp', '0 0 100 120')}<div><div class="h">たけのこ陣営</div><div class="o">ピスタチオの里｜イタリアのピスタチオ</div><div class="d">スピード自慢の攻めタイプ。＋助っ人外国人選手</div></div></button>
     </div>
     ${teamBarHtml('sel', '現在の陣営の勝ち点')}
     <p class="howto">3つの種目で、陣営に勝ち点を送ろう</p>
